@@ -1,0 +1,119 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    08/21/07 15:59:00
+eg0904a.asm						     Page 1 - 1
+
+
+				;eg0904a.asm for DOS
+					include io16.inc
+			      C .nolist    ; Do not list following content
+			      C .list
+			      C 
+ 0000					.data
+ 0000 42C88000 3E4CCCCD		f32d	real4 100.25,0.2	; 单精度浮点数
+ 0008				f64d	real8 -0.2109375	; 双精度浮点数
+       BFCB000000000000
+ 0010				f80d	real10 100.25e9	; 扩展精度浮点数
+       4023BABAECD400000000
+ 001A 00000000 00000000		varf	real4 ?,?
+ 0022 3E4CCCCD			i32d	dword 3e4ccccdh	; 0.2的编码（参见例题9-3）
+ 0000					.code
+ 0000  B8 ---- R		start:	mov ax,@data
+ 0003  8E D8				mov ds,ax
+ 0005  9B DB E3				finit	; 初始化FPU
+ 0008  D9 06 0000 R			fld f32d	; 压入单精度浮点数f32d
+ 000C  DD 06 0008 R			fld f64d	; 压入双精度浮点数f64d
+ 0010  DB 2E 0010 R			fld f80d	; 压入扩展精度浮点数f80d
+ 0014  D9 EB				fldpi	; 压入π（3.1415926…）
+ 0016  D9 16 001A R			fst varf	; 将栈顶数据π传送到变量VARF
+ 001A  D9 1E 001E R			fstp varf+4	; 将栈顶数据π弹出到变量VARF+4
+ 001E  66| A1 0004 R			mov eax,dword ptr f32d+4	; 取0.2（二进制编码）
+ 0022  66| 3B 06 0022 R			cmp eax,i32d	; 比较编码是否相同
+ 0027  74 04				jz dispy
+ 0029  B0 4E				mov al,'N'	; 不相同，显示N
+ 002B  EB 02				jmp dispn
+ 002D  B0 59			dispy: 	mov al,'Y'	; 相同，显示Y
+ 002F  E8 0000 E		dispn: 	call dispc
+
+					exit 0
+ 0032  B8 4C00		     1		mov ax,4c00h+0
+ 0035  CD 21		     1		int 21h
+					end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    08/21/07 15:59:00
+eg0904a.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0026	  Word	  Public  'DATA'	
+STACK  . . . . . . . . . . . . .	16 Bit	 0400	  Para	  Stack	  'STACK'	 
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0037	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+dispbb . . . . . . . . . . . . .	L Near	 0000	  External
+dispbd . . . . . . . . . . . . .	L Near	 0000	  External
+dispbw . . . . . . . . . . . . .	L Near	 0000	  External
+dispcrlf . . . . . . . . . . . .	L Near	 0000	  External
+dispc  . . . . . . . . . . . . .	L Near	 0000	  External
+disphb . . . . . . . . . . . . .	L Near	 0000	  External
+disphd . . . . . . . . . . . . .	L Near	 0000	  External
+disphw . . . . . . . . . . . . .	L Near	 0000	  External
+dispmsg  . . . . . . . . . . . .	L Near	 0000	  External
+dispn  . . . . . . . . . . . . .	L Near	 002F	  _TEXT	
+disprb . . . . . . . . . . . . .	L Near	 0000	  External
+disprd . . . . . . . . . . . . .	L Near	 0000	  External
+disprf . . . . . . . . . . . . .	L Near	 0000	  External
+disprw . . . . . . . . . . . . .	L Near	 0000	  External
+dispsib  . . . . . . . . . . . .	L Near	 0000	  External
+dispsid  . . . . . . . . . . . .	L Near	 0000	  External
+dispsiw  . . . . . . . . . . . .	L Near	 0000	  External
+dispuib  . . . . . . . . . . . .	L Near	 0000	  External
+dispuid  . . . . . . . . . . . .	L Near	 0000	  External
+dispuiw  . . . . . . . . . . . .	L Near	 0000	  External
+dispy  . . . . . . . . . . . . .	L Near	 002D	  _TEXT	
+f32d . . . . . . . . . . . . . .	DWord	 0000	  _DATA	
+f64d . . . . . . . . . . . . . .	QWord	 0008	  _DATA	
+f80d . . . . . . . . . . . . . .	TWord	 0010	  _DATA	
+i32d . . . . . . . . . . . . . .	DWord	 0022	  _DATA	
+readbb . . . . . . . . . . . . .	L Near	 0000	  External
+readbd . . . . . . . . . . . . .	L Near	 0000	  External
+readbw . . . . . . . . . . . . .	L Near	 0000	  External
+readc  . . . . . . . . . . . . .	L Near	 0000	  External
+readhb . . . . . . . . . . . . .	L Near	 0000	  External
+readhd . . . . . . . . . . . . .	L Near	 0000	  External
+readhw . . . . . . . . . . . . .	L Near	 0000	  External
+readmsg  . . . . . . . . . . . .	L Near	 0000	  External
+readsib  . . . . . . . . . . . .	L Near	 0000	  External
+readsid  . . . . . . . . . . . .	L Near	 0000	  External
+readsiw  . . . . . . . . . . . .	L Near	 0000	  External
+readuib  . . . . . . . . . . . .	L Near	 0000	  External
+readuid  . . . . . . . . . . . .	L Near	 0000	  External
+readuiw  . . . . . . . . . . . .	L Near	 0000	  External
+start  . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+varf . . . . . . . . . . . . . .	DWord	 001A	  _DATA	
+
+	   0 Warnings
+	   0 Errors

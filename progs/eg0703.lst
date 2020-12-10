@@ -1,0 +1,186 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/14/11 10:35:07
+eg0703.asm						     Page 1 - 1
+
+
+				;eg0703.asm in Windows Console
+					include io32.inc
+			      C .nolist
+			      C 
+			      C ;filename: io32.inc
+			      C ;A include file used with io32.lib for Windows Console
+			      C 
+			      C 	.686
+			      C 	.model flat,stdcall
+			      C 
+			      C 	option casemap:none
+			      C 	includelib bin\kernel32.lib
+			      C 
+			      C ExitProcess proto,:DWORD
+			      C exit	MACRO dwexitcode
+			      C 	invoke ExitProcess,dwexitcode
+			      C 	ENDM
+			      C 
+			      C ;declare procedures for inputting and outputting charactor or string
+			      C 	extern readc:near,readmsg:near
+			      C 	extern dispc:near,dispmsg:near,dispcrlf:near
+			      C ;declare procedures for inputting and outputting binary number
+			      C 	extern readbb:near,readbw:near,readbd:near
+			      C 	extern dispbb:near,dispbw:near,dispbd:near
+			      C ;declare procedures for inputting and outputting hexadecimal number
+			      C 	extern readhb:near,readhw:near,readhd:near
+			      C 	extern disphb:near,disphw:near,disphd:near
+			      C ;declare procedures for inputting and outputting unsigned integer number
+			      C 	extern readuib:near,readuiw:near,readuid:near
+			      C 	extern dispuib:near,dispuiw:near,dispuid:near
+			      C ;declare procedures for inputting and outputting signed integer number
+			      C 	extern readsib:near,readsiw:near,readsid:near
+			      C 	extern dispsib:near,dispsiw:near,dispsid:near
+			      C ;declare procedures for outputting registers
+			      C 	extern disprb:near,disprw:near,disprd:near,disprf:near
+			      C ;declare I/O libraries
+			      C 	includelib io32.lib
+			      C 
+			      C .list
+			      C 
+				mean	proto c,:dword,:dword	;过程声明，使用C语言规范
+ 00000000				.data 
+ 00000000 000002A3		array	dword 675, 354, -34, 198, 267, 0, 9, 2371, -67, 4257
+	   00000162
+	   FFFFFFDE
+	   000000C6
+	   0000010B
+	   00000000
+	   00000009
+	   00000943
+	   FFFFFFBD
+	   000010A1
+ 00000000				.code
+ 00000000			start:	;主程序：调用求平均值子程序，然后显示
+ 00000000				invoke mean,addr array,lengthof array
+ 00000000  6A 0A	   *	    push   +00000000Ah
+ 00000002  68 00000000 R   *	    push   OFFSET array
+ 00000007  E8 0000000F	   *	    call   mean
+ 0000000C  83 C4 08	   *	    add    esp, 000000008h
+ 0000000F  E8 00000000 E		call dispsid	;显示
+					exit 0
+ 00000014  6A 00	   *	    push   +000000000h
+ 00000016  E8 00000000 E   *	    call   ExitProcess
+			     1		invoke ExitProcess,0
+					;子程序：计算32位有符号数平均值
+					;入口参数：D表示数组地址、NUM表示元素个数
+					;出口参数：EAX＝平均值
+ 0000001B 0000001B		mean	proc c uses ebx ecx edx,d:dword,num:dword
+				    local sum:dword ;定义局部变量
+ 0000001B  55		   *	    push   ebp
+ 0000001C  8B EC	   *	    mov    ebp, esp
+ 0000001E  83 C4 FC	   *	    add    esp, 0FFFFFFFCh
+ 00000021  53		   *	    push   ebx
+ 00000022  51		   *	    push   ecx
+ 00000023  52		   *	    push   edx
+ 00000024  8B 5D 08			mov ebx,d	;EBX＝数组指针
+ 00000027  8B 4D 0C			mov ecx,num	;ECX＝元素个数
+ 0000002A  C7 45 FC			mov sum,0	;SUM保存和值
+	   00000000
+ 00000031  33 D2			xor edx,edx	;EDX＝指向数组元素
+ 00000033  8B 04 93		mean1:	mov eax,[ebx+edx*4]	;取一个数据
+ 00000036  01 45 FC			add sum,eax	;求和
+ 00000039  83 C2 01			add edx,1	;指向下一个数据
+ 0000003C  3B D1			cmp edx,ecx	;比较个数
+ 0000003E  72 F3			jb mean1	;循环
+ 00000040  8B 45 FC		    mov eax,sum
+ 00000043  99				cdq	;将累加和EAX符号扩展到EDX
+ 00000044  F7 F9			idiv ecx	;有符号数除法，EAX＝平均值（余数在EDX中）
+					ret
+ 00000046  5A		   *	    pop    edx
+ 00000047  59		   *	    pop    ecx
+ 00000048  5B		   *	    pop    ebx
+ 00000049  C9		   *	    leave  
+ 0000004A  C3		   *	    ret    00000h
+ 0000004B			mean	endp
+					end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/14/11 10:35:07
+eg0703.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000028 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000004B Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$00001 . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001B Private STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+mean . . . . . . . . . . . . . .	P Near	 0000001B _TEXT	Length= 00000030 Public C
+  d  . . . . . . . . . . . . . .	DWord	 bp + 00000008
+  num  . . . . . . . . . . . . .	DWord	 bp + 0000000C
+  sum  . . . . . . . . . . . . .	DWord	 bp - 00000004
+  mean1  . . . . . . . . . . . .	L Near	 00000033 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+array  . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+
+	   0 Warnings
+	   0 Errors

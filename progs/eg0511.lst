@@ -1,0 +1,234 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/10/11 18:22:24
+eg0511.asm						     Page 1 - 1
+
+
+				; eg0511.asm in Windows Console
+					include io32.inc
+			      C .nolist
+			      C .list
+			      C 
+					;宏定义
+
+ 00000000				.data
+ = 00000020			char = 20h	;定义第一个可显示字符：空格，其ASCII值是20H
+ 00000000 20			space	byte char
+					repeat 94-1	;;标准ASCII表，有94个可显示字符
+					    char = char +1
+					    byte char
+					endm
+ 00000001  21		     1		    byte char
+ 00000002  22		     1		    byte char
+ 00000003  23		     1		    byte char
+ 00000004  24		     1		    byte char
+ 00000005  25		     1		    byte char
+ 00000006  26		     1		    byte char
+ 00000007  27		     1		    byte char
+ 00000008  28		     1		    byte char
+ 00000009  29		     1		    byte char
+ 0000000A  2A		     1		    byte char
+ 0000000B  2B		     1		    byte char
+ 0000000C  2C		     1		    byte char
+ 0000000D  2D		     1		    byte char
+ 0000000E  2E		     1		    byte char
+ 0000000F  2F		     1		    byte char
+ 00000010  30		     1		    byte char
+ 00000011  31		     1		    byte char
+ 00000012  32		     1		    byte char
+ 00000013  33		     1		    byte char
+ 00000014  34		     1		    byte char
+ 00000015  35		     1		    byte char
+ 00000016  36		     1		    byte char
+ 00000017  37		     1		    byte char
+ 00000018  38		     1		    byte char
+ 00000019  39		     1		    byte char
+ 0000001A  3A		     1		    byte char
+ 0000001B  3B		     1		    byte char
+ 0000001C  3C		     1		    byte char
+ 0000001D  3D		     1		    byte char
+ 0000001E  3E		     1		    byte char
+ 0000001F  3F		     1		    byte char
+ 00000020  40		     1		    byte char
+ 00000021  41		     1		    byte char
+ 00000022  42		     1		    byte char
+ 00000023  43		     1		    byte char
+ 00000024  44		     1		    byte char
+ 00000025  45		     1		    byte char
+ 00000026  46		     1		    byte char
+ 00000027  47		     1		    byte char
+ 00000028  48		     1		    byte char
+ 00000029  49		     1		    byte char
+ 0000002A  4A		     1		    byte char
+ 0000002B  4B		     1		    byte char
+ 0000002C  4C		     1		    byte char
+ 0000002D  4D		     1		    byte char
+ 0000002E  4E		     1		    byte char
+ 0000002F  4F		     1		    byte char
+ 00000030  50		     1		    byte char
+ 00000031  51		     1		    byte char
+ 00000032  52		     1		    byte char
+ 00000033  53		     1		    byte char
+ 00000034  54		     1		    byte char
+ 00000035  55		     1		    byte char
+ 00000036  56		     1		    byte char
+ 00000037  57		     1		    byte char
+ 00000038  58		     1		    byte char
+ 00000039  59		     1		    byte char
+ 0000003A  5A		     1		    byte char
+ 0000003B  5B		     1		    byte char
+ 0000003C  5C		     1		    byte char
+ 0000003D  5D		     1		    byte char
+ 0000003E  5E		     1		    byte char
+ 0000003F  5F		     1		    byte char
+ 00000040  60		     1		    byte char
+ 00000041  61		     1		    byte char
+ 00000042  62		     1		    byte char
+ 00000043  63		     1		    byte char
+ 00000044  64		     1		    byte char
+ 00000045  65		     1		    byte char
+ 00000046  66		     1		    byte char
+ 00000047  67		     1		    byte char
+ 00000048  68		     1		    byte char
+ 00000049  69		     1		    byte char
+ 0000004A  6A		     1		    byte char
+ 0000004B  6B		     1		    byte char
+ 0000004C  6C		     1		    byte char
+ 0000004D  6D		     1		    byte char
+ 0000004E  6E		     1		    byte char
+ 0000004F  6F		     1		    byte char
+ 00000050  70		     1		    byte char
+ 00000051  71		     1		    byte char
+ 00000052  72		     1		    byte char
+ 00000053  73		     1		    byte char
+ 00000054  74		     1		    byte char
+ 00000055  75		     1		    byte char
+ 00000056  76		     1		    byte char
+ 00000057  77		     1		    byte char
+ 00000058  78		     1		    byte char
+ 00000059  79		     1		    byte char
+ 0000005A  7A		     1		    byte char
+ 0000005B  7B		     1		    byte char
+ 0000005C  7C		     1		    byte char
+ 0000005D  7D		     1		    byte char
+ 0000005E  00				byte 0
+
+ 00000000				.code
+ 00000000			start:
+ 00000000  B8 00000000 R		mov eax,offset space
+ 00000005  E8 00000000 E		call dispmsg
+					exit 0
+ 00000011				end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/10/11 18:22:24
+eg0511.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+ReadBinByte  . . . . . . . . . .	Proc
+ReadBinDword . . . . . . . . . .	Proc
+ReadBinWord  . . . . . . . . . .	Proc
+ReadChar . . . . . . . . . . . .	Proc
+ReadHexByte  . . . . . . . . . .	Proc
+ReadHexDword . . . . . . . . . .	Proc
+ReadHexWord  . . . . . . . . . .	Proc
+ReadSDecByte . . . . . . . . . .	Proc
+ReadSDecDword  . . . . . . . . .	Proc
+ReadSDecWord . . . . . . . . . .	Proc
+ReadString . . . . . . . . . . .	Proc
+ReadUDecByte . . . . . . . . . .	Proc
+ReadUDecDword  . . . . . . . . .	Proc
+ReadUDecWord . . . . . . . . . .	Proc
+WriteBinByte . . . . . . . . . .	Proc
+WriteBinDword  . . . . . . . . .	Proc
+WriteBinWord . . . . . . . . . .	Proc
+WriteChar  . . . . . . . . . . .	Proc
+WriteCrlf  . . . . . . . . . . .	Proc
+WriteFlags . . . . . . . . . . .	Proc
+WriteHexByte . . . . . . . . . .	Proc
+WriteHexDword  . . . . . . . . .	Proc
+WriteHexWord . . . . . . . . . .	Proc
+WriteRegByte . . . . . . . . . .	Proc
+WriteRegDword  . . . . . . . . .	Proc
+WriteRegWord . . . . . . . . . .	Proc
+WriteSDecByte  . . . . . . . . .	Proc
+WriteSDecDword . . . . . . . . .	Proc
+WriteSDecWord  . . . . . . . . .	Proc
+WriteString  . . . . . . . . . .	Proc
+WriteUDecByte  . . . . . . . . .	Proc
+WriteUDecDword . . . . . . . . .	Proc
+WriteUDecWord  . . . . . . . . .	Proc
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000005F Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000011 Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$00001 . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000011 Private STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+char . . . . . . . . . . . . . .	Number	 0000007Dh   
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+space  . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+
+	   0 Warnings
+	   0 Errors

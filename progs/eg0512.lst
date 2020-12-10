@@ -1,0 +1,166 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/10/11 18:00:40
+eg0512.asm						     Page 1 - 1
+
+
+				; eg0512.asm in Windows Console
+					include io32.inc
+			      C .nolist
+			      C .list
+			      C 
+					;宏定义
+				printf	macro format,var
+					mov al,var
+					ifidni <format>,<b>
+					call dispbb	;二进制显示用格式符“b”
+					exitm	;不再进行宏展开
+					endif
+					ifidni <format>,<x>
+					call disphb	;十六进制显示用格式符“x”
+					exitm
+					endif
+					ifidni <format>,<d>
+					call dispsib	;十进制显示用格式符“d”
+					exitm
+					endif
+					ifidni <format>,<c>
+					call dispc	;字符显示用格式符“c”
+					endif
+					endm
+
+ 00000000				.data
+ 00000000 64			var	byte 01100100b
+ 00000000				.code
+ 00000000			start:
+ 00000000				printf b,var	;二进制形式显示：01100100
+ 00000000  A0 00000000 R     1		mov al,var
+ 00000005  E8 00000000 E     1		call dispbb	
+ 0000000A  E8 00000000 E		call dispcrlf	;回车换行（用于分隔）
+					printf x,var	;十六进制形式显示：64
+ 0000000F  A0 00000000 R     1		mov al,var
+ 00000014  E8 00000000 E     1		call disphb	
+ 00000019  E8 00000000 E		call dispcrlf	;回车换行（用于分隔）
+					printf d,var	;十进制形式显示：100
+ 0000001E  A0 00000000 R     1		mov al,var
+ 00000023  E8 00000000 E     1		call dispsib	
+ 00000028  E8 00000000 E		call dispcrlf	;回车换行（用于分隔）
+					printf c,var	;字符显示：d
+ 0000002D  A0 00000000 R     1		mov al,var
+ 00000032  E8 00000000 E     1		call dispc	
+
+					exit 0
+ 0000003E				end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/10/11 18:00:40
+eg0512.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+ReadBinByte  . . . . . . . . . .	Proc
+ReadBinDword . . . . . . . . . .	Proc
+ReadBinWord  . . . . . . . . . .	Proc
+ReadChar . . . . . . . . . . . .	Proc
+ReadHexByte  . . . . . . . . . .	Proc
+ReadHexDword . . . . . . . . . .	Proc
+ReadHexWord  . . . . . . . . . .	Proc
+ReadSDecByte . . . . . . . . . .	Proc
+ReadSDecDword  . . . . . . . . .	Proc
+ReadSDecWord . . . . . . . . . .	Proc
+ReadString . . . . . . . . . . .	Proc
+ReadUDecByte . . . . . . . . . .	Proc
+ReadUDecDword  . . . . . . . . .	Proc
+ReadUDecWord . . . . . . . . . .	Proc
+WriteBinByte . . . . . . . . . .	Proc
+WriteBinDword  . . . . . . . . .	Proc
+WriteBinWord . . . . . . . . . .	Proc
+WriteChar  . . . . . . . . . . .	Proc
+WriteCrlf  . . . . . . . . . . .	Proc
+WriteFlags . . . . . . . . . . .	Proc
+WriteHexByte . . . . . . . . . .	Proc
+WriteHexDword  . . . . . . . . .	Proc
+WriteHexWord . . . . . . . . . .	Proc
+WriteRegByte . . . . . . . . . .	Proc
+WriteRegDword  . . . . . . . . .	Proc
+WriteRegWord . . . . . . . . . .	Proc
+WriteSDecByte  . . . . . . . . .	Proc
+WriteSDecDword . . . . . . . . .	Proc
+WriteSDecWord  . . . . . . . . .	Proc
+WriteString  . . . . . . . . . .	Proc
+WriteUDecByte  . . . . . . . . .	Proc
+WriteUDecDword . . . . . . . . .	Proc
+WriteUDecWord  . . . . . . . . .	Proc
+exit . . . . . . . . . . . . . .	Proc
+printf . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000001 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000003E Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$00001 . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000003E Private STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+var  . . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors

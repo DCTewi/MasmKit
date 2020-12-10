@@ -1,0 +1,339 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/09/11 21:14:16
+eg0510.asm						     Page 1 - 1
+
+
+				; eg0510.asm in Windows Console
+					include io32.inc
+			      C .nolist
+			      C .list
+			      C 
+					;宏定义
+				dreg32	macro reg32
+					local dreg1,dreg2
+					mov eax,reg32	;;显示reg32寄存器
+					mov ecx,8 
+					xor ebx,ebx
+				dreg1:	rol eax,4
+					mov edx,eax
+					and dl,0fh
+					add dl,30h	;转化为相应的ASCII码值
+					cmp dl,39h	;区别0～9和A～F数码
+					jbe dreg2
+					add dl,7
+				dreg2:	mov rd&reg32&[ebx+4],dl
+					inc ebx
+					cmp ebx,ecx
+					jb dreg1
+					endm
+ 00000000			    .data
+ 00000000 45 41 58 3D 30	rdeax	byte 'EAX=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 0000000E 45 42 58 3D 30	rdebx	byte 'EBX=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 0000001C 45 43 58 3D 30	rdecx	byte 'ECX=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 0000002A 45 44 58 3D 30	rdedx	byte 'EDX=00000000',13,10
+	   30 30 30 30 30
+	   30 30 0D 0A
+ 00000038 45 53 49 3D 30	rdesi	byte 'ESI=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 00000046 45 44 49 3D 30	rdedi	byte 'EDI=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 00000054 45 42 50 3D 30	rdebp	byte 'EBP=00000000, '
+	   30 30 30 30 30
+	   30 30 2C 20
+ 00000062 45 53 50 3D 30	rdesp	byte 'ESP=00000000',13,10,0
+	   30 30 30 30 30
+	   30 30 0D 0A 00
+ 00000000				.code
+ 00000000			start:
+ 00000000  B8 12345678			mov eax,12345678h	;假设一些数据
+ 00000005  BB ABCDEF00			mov ebx,0abcdef00h
+ 0000000A  8B C8		    mov ecx,eax
+ 0000000C  8B D3		    mov edx,ebx
+ 0000000E  BE 11111111		    mov esi,11111111h
+ 00000013  BF 22222222		    mov edi,22222222h
+ 00000018  8B EC		    mov ebp,esp
+ 0000001A  E8 00000007			call dprd
+					exit 0
+ 00000026 00000026		dprd	proc
+ 00000026  60				pushad
+ 00000027  52				push edx
+ 00000028  51				push ecx
+ 00000029  53				push ebx
+					dreg32 eax	;显示EAX
+ 0000002A  8B C0	     1		mov eax,eax	
+ 0000002C  B9 00000008	     1		mov ecx,8 
+ 00000031  33 DB	     1		xor ebx,ebx
+ 00000033  C1 C0 04	     1	??0000:	rol eax,4
+ 00000036  8B D0	     1		mov edx,eax
+ 00000038  80 E2 0F	     1		and dl,0fh
+ 0000003B  80 C2 30	     1		add dl,30h	
+ 0000003E  80 FA 39	     1		cmp dl,39h	
+ 00000041  76 03	     1		jbe ??0001
+ 00000043  80 C2 07	     1		add dl,7
+ 00000046  88 93 00000004 R  1	??0001:	mov rdeax[ebx+4],dl
+ 0000004C  43		     1		inc ebx
+ 0000004D  3B D9	     1		cmp ebx,ecx
+ 0000004F  72 E2	     1		jb ??0000
+ 00000051  5B				pop ebx
+					dreg32 ebx	;显示EBX
+ 00000052  8B C3	     1		mov eax,ebx	
+ 00000054  B9 00000008	     1		mov ecx,8 
+ 00000059  33 DB	     1		xor ebx,ebx
+ 0000005B  C1 C0 04	     1	??0002:	rol eax,4
+ 0000005E  8B D0	     1		mov edx,eax
+ 00000060  80 E2 0F	     1		and dl,0fh
+ 00000063  80 C2 30	     1		add dl,30h	
+ 00000066  80 FA 39	     1		cmp dl,39h	
+ 00000069  76 03	     1		jbe ??0003
+ 0000006B  80 C2 07	     1		add dl,7
+ 0000006E  88 93 00000012 R  1	??0003:	mov rdebx[ebx+4],dl
+ 00000074  43		     1		inc ebx
+ 00000075  3B D9	     1		cmp ebx,ecx
+ 00000077  72 E2	     1		jb ??0002
+ 00000079  59				pop ecx
+					dreg32 ecx	;显示ECX
+ 0000007A  8B C1	     1		mov eax,ecx	
+ 0000007C  B9 00000008	     1		mov ecx,8 
+ 00000081  33 DB	     1		xor ebx,ebx
+ 00000083  C1 C0 04	     1	??0004:	rol eax,4
+ 00000086  8B D0	     1		mov edx,eax
+ 00000088  80 E2 0F	     1		and dl,0fh
+ 0000008B  80 C2 30	     1		add dl,30h	
+ 0000008E  80 FA 39	     1		cmp dl,39h	
+ 00000091  76 03	     1		jbe ??0005
+ 00000093  80 C2 07	     1		add dl,7
+ 00000096  88 93 00000020 R  1	??0005:	mov rdecx[ebx+4],dl
+ 0000009C  43		     1		inc ebx
+ 0000009D  3B D9	     1		cmp ebx,ecx
+ 0000009F  72 E2	     1		jb ??0004
+ 000000A1  5A				pop edx
+					dreg32 edx	;显示EDX
+ 000000A2  8B C2	     1		mov eax,edx	
+ 000000A4  B9 00000008	     1		mov ecx,8 
+ 000000A9  33 DB	     1		xor ebx,ebx
+ 000000AB  C1 C0 04	     1	??0006:	rol eax,4
+ 000000AE  8B D0	     1		mov edx,eax
+ 000000B0  80 E2 0F	     1		and dl,0fh
+ 000000B3  80 C2 30	     1		add dl,30h	
+ 000000B6  80 FA 39	     1		cmp dl,39h	
+ 000000B9  76 03	     1		jbe ??0007
+ 000000BB  80 C2 07	     1		add dl,7
+ 000000BE  88 93 0000002E R  1	??0007:	mov rdedx[ebx+4],dl
+ 000000C4  43		     1		inc ebx
+ 000000C5  3B D9	     1		cmp ebx,ecx
+ 000000C7  72 E2	     1		jb ??0006
+					dreg32 esi	;显示ESI
+ 000000C9  8B C6	     1		mov eax,esi	
+ 000000CB  B9 00000008	     1		mov ecx,8 
+ 000000D0  33 DB	     1		xor ebx,ebx
+ 000000D2  C1 C0 04	     1	??0008:	rol eax,4
+ 000000D5  8B D0	     1		mov edx,eax
+ 000000D7  80 E2 0F	     1		and dl,0fh
+ 000000DA  80 C2 30	     1		add dl,30h	
+ 000000DD  80 FA 39	     1		cmp dl,39h	
+ 000000E0  76 03	     1		jbe ??0009
+ 000000E2  80 C2 07	     1		add dl,7
+ 000000E5  88 93 0000003C R  1	??0009:	mov rdesi[ebx+4],dl
+ 000000EB  43		     1		inc ebx
+ 000000EC  3B D9	     1		cmp ebx,ecx
+ 000000EE  72 E2	     1		jb ??0008
+					dreg32 edi	;显示EDI
+ 000000F0  8B C7	     1		mov eax,edi	
+ 000000F2  B9 00000008	     1		mov ecx,8 
+ 000000F7  33 DB	     1		xor ebx,ebx
+ 000000F9  C1 C0 04	     1	??000A:	rol eax,4
+ 000000FC  8B D0	     1		mov edx,eax
+ 000000FE  80 E2 0F	     1		and dl,0fh
+ 00000101  80 C2 30	     1		add dl,30h	
+ 00000104  80 FA 39	     1		cmp dl,39h	
+ 00000107  76 03	     1		jbe ??000B
+ 00000109  80 C2 07	     1		add dl,7
+ 0000010C  88 93 0000004A R  1	??000B:	mov rdedi[ebx+4],dl
+ 00000112  43		     1		inc ebx
+ 00000113  3B D9	     1		cmp ebx,ecx
+ 00000115  72 E2	     1		jb ??000A
+					dreg32 ebp	;显示EBP
+ 00000117  8B C5	     1		mov eax,ebp	
+ 00000119  B9 00000008	     1		mov ecx,8 
+ 0000011E  33 DB	     1		xor ebx,ebx
+ 00000120  C1 C0 04	     1	??000C:	rol eax,4
+ 00000123  8B D0	     1		mov edx,eax
+ 00000125  80 E2 0F	     1		and dl,0fh
+ 00000128  80 C2 30	     1		add dl,30h	
+ 0000012B  80 FA 39	     1		cmp dl,39h	
+ 0000012E  76 03	     1		jbe ??000D
+ 00000130  80 C2 07	     1		add dl,7
+ 00000133  88 93 00000058 R  1	??000D:	mov rdebp[ebx+4],dl
+ 00000139  43		     1		inc ebx
+ 0000013A  3B D9	     1		cmp ebx,ecx
+ 0000013C  72 E2	     1		jb ??000C
+ 0000013E  83 C4 24			add esp,36	;获得进入该子程序前的ESP
+					dreg32 esp	;显示ESP
+ 00000141  8B C4	     1		mov eax,esp	
+ 00000143  B9 00000008	     1		mov ecx,8 
+ 00000148  33 DB	     1		xor ebx,ebx
+ 0000014A  C1 C0 04	     1	??000E:	rol eax,4
+ 0000014D  8B D0	     1		mov edx,eax
+ 0000014F  80 E2 0F	     1		and dl,0fh
+ 00000152  80 C2 30	     1		add dl,30h	
+ 00000155  80 FA 39	     1		cmp dl,39h	
+ 00000158  76 03	     1		jbe ??000F
+ 0000015A  80 C2 07	     1		add dl,7
+ 0000015D  88 93 00000066 R  1	??000F:	mov rdesp[ebx+4],dl
+ 00000163  43		     1		inc ebx
+ 00000164  3B D9	     1		cmp ebx,ecx
+ 00000166  72 E2	     1		jb ??000E
+ 00000168  83 EC 24			sub esp,36	;恢复ESP
+ 0000016B  B8 00000000 R		mov eax,offset rdeax
+ 00000170  E8 00000000 E		call dispmsg
+ 00000175  61				popad
+ 00000176  C3				ret 
+ 00000177			dprd	endp
+
+					end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/09/11 21:14:16
+eg0510.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+ReadBinByte  . . . . . . . . . .	Proc
+ReadBinDword . . . . . . . . . .	Proc
+ReadBinWord  . . . . . . . . . .	Proc
+ReadChar . . . . . . . . . . . .	Proc
+ReadHexByte  . . . . . . . . . .	Proc
+ReadHexDword . . . . . . . . . .	Proc
+ReadHexWord  . . . . . . . . . .	Proc
+ReadSDecByte . . . . . . . . . .	Proc
+ReadSDecDword  . . . . . . . . .	Proc
+ReadSDecWord . . . . . . . . . .	Proc
+ReadString . . . . . . . . . . .	Proc
+ReadUDecByte . . . . . . . . . .	Proc
+ReadUDecDword  . . . . . . . . .	Proc
+ReadUDecWord . . . . . . . . . .	Proc
+WriteBinByte . . . . . . . . . .	Proc
+WriteBinDword  . . . . . . . . .	Proc
+WriteBinWord . . . . . . . . . .	Proc
+WriteChar  . . . . . . . . . . .	Proc
+WriteCrlf  . . . . . . . . . . .	Proc
+WriteFlags . . . . . . . . . . .	Proc
+WriteHexByte . . . . . . . . . .	Proc
+WriteHexDword  . . . . . . . . .	Proc
+WriteHexWord . . . . . . . . . .	Proc
+WriteRegByte . . . . . . . . . .	Proc
+WriteRegDword  . . . . . . . . .	Proc
+WriteRegWord . . . . . . . . . .	Proc
+WriteSDecByte  . . . . . . . . .	Proc
+WriteSDecDword . . . . . . . . .	Proc
+WriteSDecWord  . . . . . . . . .	Proc
+WriteString  . . . . . . . . . .	Proc
+WriteUDecByte  . . . . . . . . .	Proc
+WriteUDecDword . . . . . . . . .	Proc
+WriteUDecWord  . . . . . . . . .	Proc
+dreg32 . . . . . . . . . . . . .	Proc
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000071 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000177 Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$00001 . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000026 Private STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+dprd . . . . . . . . . . . . . .	P Near	 00000026 _TEXT	Length= 00000151 Public STDCALL
+  ??0000 . . . . . . . . . . . .	L Near	 00000033 _TEXT	
+  ??0001 . . . . . . . . . . . .	L Near	 00000046 _TEXT	
+  ??0002 . . . . . . . . . . . .	L Near	 0000005B _TEXT	
+  ??0003 . . . . . . . . . . . .	L Near	 0000006E _TEXT	
+  ??0004 . . . . . . . . . . . .	L Near	 00000083 _TEXT	
+  ??0005 . . . . . . . . . . . .	L Near	 00000096 _TEXT	
+  ??0006 . . . . . . . . . . . .	L Near	 000000AB _TEXT	
+  ??0007 . . . . . . . . . . . .	L Near	 000000BE _TEXT	
+  ??0008 . . . . . . . . . . . .	L Near	 000000D2 _TEXT	
+  ??0009 . . . . . . . . . . . .	L Near	 000000E5 _TEXT	
+  ??000A . . . . . . . . . . . .	L Near	 000000F9 _TEXT	
+  ??000B . . . . . . . . . . . .	L Near	 0000010C _TEXT	
+  ??000C . . . . . . . . . . . .	L Near	 00000120 _TEXT	
+  ??000D . . . . . . . . . . . .	L Near	 00000133 _TEXT	
+  ??000E . . . . . . . . . . . .	L Near	 0000014A _TEXT	
+  ??000F . . . . . . . . . . . .	L Near	 0000015D _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+rdeax  . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+rdebp  . . . . . . . . . . . . .	Byte	 00000054 _DATA	
+rdebx  . . . . . . . . . . . . .	Byte	 0000000E _DATA	
+rdecx  . . . . . . . . . . . . .	Byte	 0000001C _DATA	
+rdedi  . . . . . . . . . . . . .	Byte	 00000046 _DATA	
+rdedx  . . . . . . . . . . . . .	Byte	 0000002A _DATA	
+rdesi  . . . . . . . . . . . . .	Byte	 00000038 _DATA	
+rdesp  . . . . . . . . . . . . .	Byte	 00000062 _DATA	
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+
+	   0 Warnings
+	   0 Errors

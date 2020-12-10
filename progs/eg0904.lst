@@ -1,0 +1,124 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    08/21/07 15:57:57
+eg0904.asm						     Page 1 - 1
+
+
+				;eg0904.asm
+					include io32.inc
+			      C .nolist
+			      C .list
+			      C 
+ 00000000				.data
+ 00000000 42C88000		f32d	real4 100.25,0.2	; 单精度浮点数
+	   3E4CCCCD
+ 00000008			f64d	real8 -0.2109375	; 双精度浮点数
+	   BFCB000000000000
+ 00000010			f80d	real10 100.25e9	; 扩展精度浮点数
+	   4023BABAECD400000000
+ 0000001A 00000000		varf	real4 ?,?
+	   00000000
+ 00000022 3E4CCCCD		i32d	dword 3e4ccccdh	; 0.2的编码（参见例题9-3）
+ 00000000				.code
+ 00000000			start:
+ 00000000  9B DB E3			finit	; 初始化FPU
+ 00000003  D9 05 00000000 R		fld f32d	; 压入单精度浮点数f32d
+ 00000009  DD 05 00000008 R		fld f64d	; 压入双精度浮点数f64d
+ 0000000F  DB 2D 00000010 R		fld f80d	; 压入扩展精度浮点数f80d
+ 00000015  D9 EB			fldpi	; 压入π（3.1415926…）
+ 00000017  D9 15 0000001A R		fst varf	; 将栈顶数据π传送到变量VARF
+ 0000001D  D9 1D 0000001E R		fstp varf+4	; 将栈顶数据π弹出到变量VARF+4
+ 00000023  A1 00000004 R		mov eax,dword ptr f32d+4	; 取0.2（二进制编码）
+ 00000028  3B 05 00000022 R		cmp eax,i32d	; 比较编码是否相同
+ 0000002E  74 04			jz dispy
+ 00000030  B0 4E			mov al,'N'	; 不相同，显示N
+ 00000032  EB 02			jmp dispn
+ 00000034  B0 59		dispy: 	mov al,'Y'	; 相同，显示Y
+ 00000036  E8 00000000 E	dispn: 	call dispc
+
+					exit 0
+					end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    08/21/07 15:57:57
+eg0904.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000026 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000042 Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispn  . . . . . . . . . . . . .	L Near	 00000036 _TEXT	
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispy  . . . . . . . . . . . . .	L Near	 00000034 _TEXT	
+f32d . . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+f64d . . . . . . . . . . . . . .	QWord	 00000008 _DATA	
+f80d . . . . . . . . . . . . . .	TWord	 00000010 _DATA	
+i32d . . . . . . . . . . . . . .	DWord	 00000022 _DATA	
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+varf . . . . . . . . . . . . . .	DWord	 0000001A _DATA	
+
+	   0 Warnings
+	   0 Errors

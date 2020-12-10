@@ -1,0 +1,150 @@
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/13/11 11:44:32
+eg0609.asm						     Page 1 - 1
+
+
+				; eg0609.asm in Windows Console
+					include io32.inc
+			      C .nolist
+			      C 
+			      C ;filename: io32.inc
+			      C ;A include file used with io32.lib for Windows Console
+			      C 
+			      C 	.686
+			      C 	.model flat,stdcall
+			      C 
+			      C 	option casemap:none
+			      C 	includelib bin\kernel32.lib
+			      C 
+			      C ExitProcess proto,:DWORD
+			      C exit	MACRO dwexitcode
+			      C 	invoke ExitProcess,dwexitcode
+			      C 	ENDM
+			      C 
+			      C ;declare procedures for inputting and outputting charactor or string
+			      C 	extern readc:near,readmsg:near
+			      C 	extern dispc:near,dispmsg:near,dispcrlf:near
+			      C ;declare procedures for inputting and outputting binary number
+			      C 	extern readbb:near,readbw:near,readbd:near
+			      C 	extern dispbb:near,dispbw:near,dispbd:near
+			      C ;declare procedures for inputting and outputting hexadecimal number
+			      C 	extern readhb:near,readhw:near,readhd:near
+			      C 	extern disphb:near,disphw:near,disphd:near
+			      C ;declare procedures for inputting and outputting unsigned integer number
+			      C 	extern readuib:near,readuiw:near,readuid:near
+			      C 	extern dispuib:near,dispuiw:near,dispuid:near
+			      C ;declare procedures for inputting and outputting signed integer number
+			      C 	extern readsib:near,readsiw:near,readsid:near
+			      C 	extern dispsib:near,dispsiw:near,dispsid:near
+			      C ;declare procedures for outputting registers
+			      C 	extern disprb:near,disprw:near,disprd:near,disprf:near
+			      C ;declare I/O libraries
+			      C 	includelib io32.lib
+			      C 
+			      C .list
+			      C 
+ 00000000				.data
+ 00000000				.code
+ 00000000			start:
+ 00000000  B8 00000001			mov eax,1	;EAX=F(1)=1
+ 00000005  E8 00000000 E		call dispuid	;显示第1个数
+ 0000000A  E8 00000000 E		call dispcrlf	;回车换行
+ 0000000F  E8 00000000 E		call dispuid	;显示第2个数
+ 00000014  E8 00000000 E		call dispcrlf	;回车换行
+ 00000019  8B D8			mov ebx,eax	;EBX=F(2)=1
+					.while -1   ;无条件循环
+ 0000001B		   *@C0001:
+ 0000001B  03 C3			add eax,ebx	;EAX=F(N)=F(N-1)+F(N-2)
+					.break .if CARRY?	;如果出现进位;则退出循环
+ 0000001D  72 0D	   *	    jb     @C0002
+ 0000001F  E8 00000000 E		call dispuid	;显示一个数
+ 00000024  E8 00000000 E		call dispcrlf	;回车换行
+ 00000029  93				xchg eax,ebx	;EAX=F(N-1)，EBX=F(N-2)
+				  	.endw 
+ 0000002A  EB EF	   *	    jmp    @C0001
+ 0000002C		   *@C0002:
+
+					exit 0
+ 0000002C  6A 00	   *	    push   +000000000h
+ 0000002E  E8 00000000 E   *	    call   ExitProcess
+			     1		invoke ExitProcess,0
+ 00000033				end start
+Microsoft (R) Macro Assembler Version 6.15.8803		    02/13/11 11:44:32
+eg0609.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+exit . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000033 Para	  Public  'CODE'	
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+$$$00001 . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000033 Private STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+dispbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispcrlf . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disphw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+disprw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+dispuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readbw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readc  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhb . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhd . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readhw . . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readmsg  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readsiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuib  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuid  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+readuiw  . . . . . . . . . . . .	L Near	 00000000 FLAT	External STDCALL
+start  . . . . . . . . . . . . .	L Near	 00000000 _TEXT	Public STDCALL
+
+	   0 Warnings
+	   0 Errors
