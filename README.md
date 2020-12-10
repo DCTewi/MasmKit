@@ -11,6 +11,7 @@
 2. 如果这侵犯到您的权益，请来函告知。
 
     钱晓捷
+
     电子邮件：qianxiaojie@zzu.edu.cn
     
     2011.7
@@ -19,9 +20,10 @@
 
 1. 为了便于使用进行了修改，将不需要的内容精简，不再依赖绝对位置。
 2. 给各个批处理文件添加了消息回显。
-3. 要初始化，在目标文件夹中执行 `InitAsmWorkspace.bat workspace` 即可，将自动添加 vscode 配置文件。
+3. 要初始化，在目标文件夹中执行 `InitAsmWorkspace.bat` 即可，将自动添加 vscode 配置文件。
 
     冻葱Tewi
+
     电子邮件：dctewi@dctewi.com
     
     2020.10
